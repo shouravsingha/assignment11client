@@ -10,6 +10,11 @@ import Profile from './pages/Profile'
 import DonationRequests from './pages/DonationRequests'
 import DonationRequestDetails from './pages/DonationRequestDetails'
 import CreateDonationRequest from './pages/CreateDonationRequest'
+import MyDonationRequests from './pages/MyDonationRequests'
+import EditDonationRequest from './pages/EditDonationRequest'
+import AllUsers from './pages/AllUsers'
+import AllDonationRequests from './pages/AllDonationRequests'
+import DashboardLayout from './components/DashboardLayout'
 import { AuthProvider } from './contexts/AuthContext'
 
 function App() {
@@ -26,22 +31,20 @@ function App() {
                             <Route path="/donation-requests" element={<DonationRequests />} />
                             <Route path="/donation-requests/:id" element={<DonationRequestDetails />} />
 
-                            {/* Protected Routes */}
-                            <Route path="/create-donation-request" element={
-                                <PrivateRoute>
-                                    <CreateDonationRequest />
-                                </PrivateRoute>
-                            } />
+                            {/* Dashboard Routes */}
                             <Route path="/dashboard" element={
                                 <PrivateRoute>
-                                    <DashboardHome />
+                                    <DashboardLayout />
                                 </PrivateRoute>
-                            } />
-                            <Route path="/profile" element={
-                                <PrivateRoute>
-                                    <Profile />
-                                </PrivateRoute>
-                            } />
+                            }>
+                                <Route index element={<DashboardHome />} />
+                                <Route path="my-donation-requests" element={<MyDonationRequests />} />
+                                <Route path="create-donation-request" element={<CreateDonationRequest />} />
+                                <Route path="edit-donation-request/:id" element={<EditDonationRequest />} />
+                                <Route path="all-users" element={<AllUsers />} />
+                                <Route path="all-donation-requests" element={<AllDonationRequests />} />
+                                <Route path="profile" element={<Profile />} />
+                            </Route>
                         </Routes>
                     </main>
                     <Footer />

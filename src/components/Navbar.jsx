@@ -86,7 +86,7 @@ function Navbar() {
                                             📊 Dashboard
                                         </Link>
                                         <Link
-                                            to="/profile"
+                                            to="/dashboard/profile"
                                             onClick={() => setShowDropdown(false)}
                                             className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition"
                                         >
