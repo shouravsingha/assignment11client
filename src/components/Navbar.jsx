@@ -32,7 +32,7 @@ function Navbar() {
                     {/* Center Links */}
                     <div className="hidden md:flex items-center space-x-8">
                         <Link to="/" className="hover:text-red-100 transition">Home</Link>
-                        <Link to="/" className="hover:text-red-100 transition">Donation Requests</Link>
+                        <Link to="/donation-requests" className="hover:text-red-100 transition">Donation Requests</Link>
                         {isAuthenticated && (
                             <Link to="/dashboard" className="hover:text-red-100 transition">Dashboard</Link>
                         )}

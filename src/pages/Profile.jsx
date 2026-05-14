@@ -7,6 +7,7 @@ import { uploadImage } from '../utils/imageUpload';
 const Profile = () => {
     const { user, mongoUser, setMongoUser, updateUserProfile } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
+    const [profileLoading, setProfileLoading] = useState(true);
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
@@ -18,6 +19,26 @@ const Profile = () => {
         district: '',
         upazila: ''
     });
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                setProfileLoading(true);
+                const response = await axiosInstance.get('/users/profile');
+
+                if (response.data.success) {
+                    setMongoUser(response.data.user);
+                }
+            } catch (error) {
+                const errorMsg = error.response?.data?.message || error.message || 'Failed to load profile';
+                setMessage({ type: 'error', text: errorMsg });
+            } finally {
+                setProfileLoading(false);
+            }
+        };
+
+        fetchProfile();
+    }, [setMongoUser]);
 
     useEffect(() => {
         if (mongoUser) {
@@ -34,6 +55,7 @@ const Profile = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        setMessage({ type: '', text: '' });
     };
 
     const handleImageChange = async (e) => {
@@ -54,30 +76,51 @@ const Profile = () => {
     const handleDistrictChange = (e) => {
         const districtId = e.target.value;
         setFormData(prev => ({ ...prev, district: districtId, upazila: '' }));
+        setMessage({ type: '', text: '' });
+    };
+
+    const validateProfile = () => {
+        if (!formData.name.trim() || !formData.bloodGroup || !formData.district || !formData.upazila) {
+            return 'Please provide name, blood group, district, and upazila';
+        }
+
+        if (!bloodGroups.includes(formData.bloodGroup)) {
+            return 'Please select a valid blood group';
+        }
+
+        if (!bangladeshData.upazilas[formData.district]?.includes(formData.upazila)) {
+            return 'Please select a valid upazila for the chosen district';
+        }
+
+        return '';
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const validationError = validateProfile();
+
+        if (validationError) {
+            setMessage({ type: 'error', text: validationError });
+            return;
+        }
+
         setLoading(true);
         setMessage({ type: '', text: '' });
 
         try {
-            console.log('Starting profile update with data:', formData);
-            // 1. Update Firebase Profile (Name/Photo)
-            await updateUserProfile(formData.name, formData.avatar);
-            console.log('Firebase profile updated');
+            await updateUserProfile(formData.name.trim(), formData.avatar);
 
-            // 2. Update MongoDB Profile
-            const response = await axiosInstance.put('/users/profile', formData);
-            console.log('Server response:', response.data);
+            const response = await axiosInstance.put('/users/profile', {
+                ...formData,
+                name: formData.name.trim()
+            });
 
             if (response.data.success) {
                 setMessage({ type: 'success', text: 'Profile updated successfully!' });
-                setMongoUser(response.data.user); // Update global state
+                setMongoUser(response.data.user);
                 setIsEditing(false);
             }
         } catch (error) {
-            console.error('Profile update full error:', error);
             const errorMsg = error.response?.data?.message || error.message || 'Update failed';
             setMessage({ type: 'error', text: errorMsg });
         } finally {
@@ -90,6 +133,17 @@ const Profile = () => {
         // Ensure comparison matches the type (id is number in constants, district is string in form)
         return bangladeshData.upazilas[formData.district] || [];
     };
+
+    if (profileLoading) {
+        return (
+            <div className="max-w-4xl mx-auto p-6">
+                <div className="bg-white rounded-xl shadow-md p-12 text-center">
+                    <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-red-600"></div>
+                    <p className="text-gray-600 mt-4">Loading profile...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-4xl mx-auto p-6">

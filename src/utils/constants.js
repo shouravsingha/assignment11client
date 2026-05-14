@@ -103,3 +103,23 @@ export const bangladeshData = {
 }
 
 export const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+
+export const donationStatuses = [
+    { value: 'pending', label: 'Pending' },
+    { value: 'inprogress', label: 'In Progress' },
+    { value: 'done', label: 'Done' },
+    { value: 'canceled', label: 'Canceled' }
+]
+
+export const getDistrictName = (districtId) => {
+    const district = bangladeshData.districts.find((item) => {
+        return String(item.id) === String(districtId)
+    })
+
+    return district?.name || districtId || 'N/A'
+}
+
+export const getUpazilasByDistrict = (districtId) => {
+    if (!districtId) return []
+    return bangladeshData.upazilas[districtId] || []
+}

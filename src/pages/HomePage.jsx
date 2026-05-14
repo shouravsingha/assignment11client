@@ -24,10 +24,10 @@ function HomePage() {
                             {isAuthenticated ? '📊 Go to Dashboard' : '✍️ Join as a Donor'}
                         </button>
                         <button
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate('/donation-requests')}
                             className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-600 transition"
                         >
-                            🔍 Search Donors
+                            View Donation Requests
                         </button>
                     </div>
                 </div>
