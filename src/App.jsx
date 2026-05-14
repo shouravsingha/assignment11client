@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import DashboardHome from './pages/DashboardHome'
+import Profile from './pages/Profile'
 import { AuthProvider } from './contexts/AuthContext'
 
 function App() {
@@ -24,6 +25,11 @@ function App() {
                             <Route path="/dashboard" element={
                                 <PrivateRoute>
                                     <DashboardHome />
+                                </PrivateRoute>
+                            } />
+                            <Route path="/profile" element={
+                                <PrivateRoute>
+                                    <Profile />
                                 </PrivateRoute>
                             } />
                         </Routes>

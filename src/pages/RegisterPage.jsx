@@ -3,11 +3,13 @@ import { useNavigate, Link } from 'react-router-dom'
 import axiosInstance from '../utils/axiosInstance'
 import { bangladeshData, bloodGroups } from '../utils/constants'
 import { useAuth } from '../hooks/useAuth'
+import { uploadImage } from '../utils/imageUpload'
 
 function RegisterPage() {
     const navigate = useNavigate()
     const { createUser, updateUserProfile } = useAuth()
     const [loading, setLoading] = useState(false)
+    const [uploading, setUploading] = useState(false)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
 
@@ -31,6 +33,22 @@ function RegisterPage() {
             [name]: value
         }))
         setError('')
+    }
+
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0]
+        if (!file) return
+
+        try {
+            setUploading(true)
+            setError('')
+            const imageUrl = await uploadImage(file)
+            setFormData(prev => ({ ...prev, avatar: imageUrl }))
+        } catch (err) {
+            setError('Image upload failed. Please try again.')
+        } finally {
+            setUploading(false)
+        }
     }
 
     const handleDistrictChange = (e) => {
@@ -73,15 +91,17 @@ function RegisterPage() {
 
         try {
             setLoading(true)
-            
+
             // 1. Create user in Firebase
-            await createUser(formData.email, formData.password)
-            
+            const userCredential = await createUser(formData.email, formData.password)
+            const firebaseUid = userCredential.user.uid
+
             // 2. Update Firebase profile
             await updateUserProfile(formData.name, formData.avatar || 'https://i.ibb.co/default-avatar.png')
 
-            // 3. Sync with MongoDB
+            // 3. Sync with MongoDB (include Firebase UID)
             const response = await axiosInstance.post('/auth/register', {
+                firebaseUid: firebaseUid,
                 name: formData.name,
                 email: formData.email,
                 avatar: formData.avatar || 'https://i.ibb.co/default-avatar.png',
@@ -92,7 +112,7 @@ function RegisterPage() {
 
             if (response.data.success) {
                 setSuccess('Registration successful! Redirecting...')
-                
+
                 // Redirect after 1.5 seconds
                 setTimeout(() => {
                     navigate('/dashboard')
@@ -160,6 +180,20 @@ function RegisterPage() {
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
                             disabled={loading}
                         />
+                    </div>
+
+                    {/* Avatar Upload */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Profile Picture</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+                            disabled={loading || uploading}
+                        />
+                        {uploading && <p className="text-xs text-blue-600 mt-1">Uploading image...</p>}
+                        {formData.avatar && !uploading && <p className="text-xs text-green-600 mt-1">Image uploaded successfully!</p>}
                     </div>
 
                     {/* Blood Group */}
