@@ -57,6 +57,33 @@ function HomePage() {
                 </div>
             </section>
 
+            {/* Quick Actions Section */}
+            <section className="py-16">
+                <div className="max-w-7xl mx-auto px-4 text-center">
+                    <h2 className="text-3xl font-bold mb-12">Ready to Help?</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div 
+                            onClick={() => navigate('/search-donors')}
+                            className="bg-red-50 p-8 rounded-2xl border-2 border-red-100 cursor-pointer hover:bg-red-100 transition group"
+                        >
+                            <div className="text-5xl mb-4 group-hover:scale-110 transition">🔍</div>
+                            <h3 className="text-2xl font-bold text-red-700 mb-2">Search Donors</h3>
+                            <p className="text-red-600/80 mb-6">Find blood donors in your area and contact them directly.</p>
+                            <span className="bg-red-600 text-white px-6 py-2 rounded-full font-semibold">Start Searching</span>
+                        </div>
+                        <div 
+                            onClick={() => navigate('/donation-requests')}
+                            className="bg-red-50 p-8 rounded-2xl border-2 border-red-100 cursor-pointer hover:bg-red-100 transition group"
+                        >
+                            <div className="text-5xl mb-4 group-hover:scale-110 transition">🩸</div>
+                            <h3 className="text-2xl font-bold text-red-700 mb-2">Active Requests</h3>
+                            <p className="text-red-600/80 mb-6">View all current blood donation requests and volunteer today.</p>
+                            <span className="bg-red-600 text-white px-6 py-2 rounded-full font-semibold">View Requests</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Contact Section */}
             <section className="py-16">
                 <div className="max-w-7xl mx-auto px-4">

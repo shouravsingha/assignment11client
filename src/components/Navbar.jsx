@@ -33,6 +33,8 @@ function Navbar() {
                     <div className="hidden md:flex items-center space-x-8">
                         <Link to="/" className="hover:text-red-100 transition">Home</Link>
                         <Link to="/donation-requests" className="hover:text-red-100 transition">Donation Requests</Link>
+                        <Link to="/search-donors" className="hover:text-red-100 transition">Search Donors</Link>
+                        <Link to="/funding" className="hover:text-red-100 transition">Give Funding</Link>
                         {isAuthenticated && (
                             <Link to="/dashboard" className="hover:text-red-100 transition">Dashboard</Link>
                         )}

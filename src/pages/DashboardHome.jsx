@@ -29,15 +29,17 @@ const DashboardHome = () => {
 
                 // Fetch Admin/Volunteer Stats
                 if (isAdminOrVolunteer) {
-                    const [userStatsRes, donationStatsRes] = await Promise.all([
+                    const [userStatsRes, donationStatsRes, totalFundsRes] = await Promise.all([
                         axiosInstance.get('/users/admin-stats'),
-                        axiosInstance.get('/donation-requests/get-stats')
+                        axiosInstance.get('/donation-requests/get-stats'),
+                        axiosInstance.get('/funding/total')
                     ]);
 
                     if (userStatsRes.data.success && donationStatsRes.data.success) {
                         setAdminStats({
                             ...userStatsRes.data.stats,
-                            ...donationStatsRes.data.stats
+                            ...donationStatsRes.data.stats,
+                            totalFunds: totalFundsRes.data.total || 0
                         });
                     }
                 }
@@ -91,8 +93,8 @@ const DashboardHome = () => {
                         <p className="text-3xl font-black text-yellow-600 mt-1">{adminStats.pendingRequests}</p>
                     </div>
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <p className="text-sm font-bold text-gray-500 uppercase tracking-wider">Funded (Mock)</p>
-                        <p className="text-3xl font-black text-green-600 mt-1">BDT 0</p>
+                        <p className="text-sm font-bold text-gray-500 uppercase tracking-wider">Total Funded</p>
+                        <p className="text-3xl font-black text-green-600 mt-1">${adminStats.totalFunds.toLocaleString()}</p>
                     </div>
                 </div>
             )}

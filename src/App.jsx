@@ -5,9 +5,11 @@ import PrivateRoute from './components/PrivateRoute'
 import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
+import SearchDonors from './pages/SearchDonors'
 import DashboardHome from './pages/DashboardHome'
 import Profile from './pages/Profile'
 import DonationRequests from './pages/DonationRequests'
+import FundingPage from './pages/FundingPage'
 import DonationRequestDetails from './pages/DonationRequestDetails'
 import CreateDonationRequest from './pages/CreateDonationRequest'
 import MyDonationRequests from './pages/MyDonationRequests'
@@ -28,6 +30,8 @@ function App() {
                             <Route path="/" element={<HomePage />} />
                             <Route path="/register" element={<RegisterPage />} />
                             <Route path="/login" element={<LoginPage />} />
+                            <Route path="/search-donors" element={<SearchDonors />} />
+                            <Route path="/funding" element={<FundingPage />} />
                             <Route path="/donation-requests" element={<DonationRequests />} />
                             <Route path="/donation-requests/:id" element={<DonationRequestDetails />} />
 
