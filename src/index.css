@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .glass {
+        @apply bg-white/70 backdrop-blur-md border border-white/20;
+    }
+    .glass-dark {
+        @apply bg-gray-900/80 backdrop-blur-md border border-gray-800/50;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -9,10 +18,33 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: #1a1a1a;
+    background-color: #fcfcfc;
 }
+
+.premium-button {
+    @apply relative overflow-hidden transition-all duration-300 transform active:scale-95;
+}
+
+.premium-button::after {
+    content: '';
+    @apply absolute inset-0 bg-white/20 opacity-0 transition-opacity duration-300;
+}
+
+.premium-button:hover::after {
+    @apply opacity-100;
+}
+
+.premium-input {
+    @apply transition-all duration-200 focus:ring-4 focus:ring-red-500/10 focus:border-red-500 border-gray-200 rounded-xl;
+}
+
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-500 { animation-delay: 500ms; }
 
 html {
     scroll-behavior: smooth;

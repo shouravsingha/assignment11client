@@ -4,6 +4,7 @@ import axiosInstance from '../utils/axiosInstance'
 import { bangladeshData, bloodGroups } from '../utils/constants'
 import { useAuth } from '../hooks/useAuth'
 import { uploadImage } from '../utils/imageUpload'
+import { Heart, Shield, CheckCircle, AlertCircle } from 'lucide-react'
 
 function RegisterPage() {
     const navigate = useNavigate()
@@ -134,160 +135,172 @@ function RegisterPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-900">🩸 Join Us</h2>
-                    <p className="text-gray-600 mt-2">Create an account to start donating blood</p>
+        <div className="min-h-screen bg-white flex items-center justify-center py-20 px-4 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-red-50/50 -skew-x-12 transform origin-top-right -z-10"></div>
+            
+            <div className="w-full max-w-2xl bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-12 relative animate-slide-up">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-red-600 rounded-[2.5rem] rotate-12 flex items-center justify-center text-white shadow-xl shadow-red-200 -z-10">
+                    <Heart size={48} fill="currentColor" className="animate-pulse" />
+                </div>
+
+                <div className="text-center mb-12">
+                    <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-4">
+                        <Shield size={14} /> Secure Registration
+                    </div>
+                    <h2 className="text-4xl font-black text-gray-950 tracking-tighter">Join BloodCare</h2>
+                    <p className="text-gray-500 font-bold mt-2">Become a life-saver in just a few steps.</p>
                 </div>
 
                 {error && (
-                    <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                        {error}
+                    <div className="mb-8 p-4 bg-red-50 border border-red-100 text-red-600 rounded-2xl flex items-center gap-3 text-sm font-bold animate-shake">
+                        <AlertCircle size={20} /> {error}
                     </div>
                 )}
 
                 {success && (
-                    <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                        {success}
+                    <div className="mb-8 p-4 bg-green-50 border border-green-100 text-green-600 rounded-2xl flex items-center gap-3 text-sm font-bold">
+                        <CheckCircle size={20} /> {success}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Name */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            placeholder="Enter your full name"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
-                            disabled={loading}
-                        />
-                    </div>
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Name */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-widest px-1">Full Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                placeholder="John Doe"
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all font-bold premium-input"
+                                disabled={loading}
+                            />
+                        </div>
 
-                    {/* Email */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            placeholder="Enter your email"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
-                            disabled={loading}
-                        />
-                    </div>
+                        {/* Email */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-widest px-1">Email Address</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                placeholder="john@example.com"
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all font-bold premium-input"
+                                disabled={loading}
+                            />
+                        </div>
 
-                    {/* Avatar Upload */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Profile Picture</label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
-                            disabled={loading || uploading}
-                        />
-                        {uploading && <p className="text-xs text-blue-600 mt-1">Uploading image...</p>}
-                        {formData.avatar && !uploading && <p className="text-xs text-green-600 mt-1">Image uploaded successfully!</p>}
-                    </div>
+                        {/* Blood Group */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-widest px-1">Blood Group</label>
+                            <select
+                                name="bloodGroup"
+                                value={formData.bloodGroup}
+                                onChange={handleInputChange}
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all font-bold premium-input"
+                                disabled={loading}
+                            >
+                                <option value="">Select Group</option>
+                                {bloodGroups.map(bg => (
+                                    <option key={bg} value={bg}>{bg}</option>
+                                ))}
+                            </select>
+                        </div>
 
-                    {/* Blood Group */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Blood Group</label>
-                        <select
-                            name="bloodGroup"
-                            value={formData.bloodGroup}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
-                            disabled={loading}
-                        >
-                            <option value="">Select Blood Group</option>
-                            {bloodGroups.map(bg => (
-                                <option key={bg} value={bg}>{bg}</option>
-                            ))}
-                        </select>
-                    </div>
+                        {/* Avatar Upload */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-widest px-1">Profile Picture</label>
+                            <div className="relative">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all font-bold file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-red-50 file:text-red-600 hover:file:bg-red-100"
+                                    disabled={loading || uploading}
+                                />
+                                {uploading && <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 text-[10px] font-black text-red-600 animate-pulse uppercase tracking-widest">Uploading...</div>}
+                            </div>
+                        </div>
 
-                    {/* District */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">District</label>
-                        <select
-                            value={selectedDistrict}
-                            onChange={handleDistrictChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
-                            disabled={loading}
-                        >
-                            <option value="">Select District</option>
-                            {bangladeshData.districts.map(district => (
-                                <option key={district.id} value={district.id}>{district.name}</option>
-                            ))}
-                        </select>
-                    </div>
+                        {/* District */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-widest px-1">District</label>
+                            <select
+                                value={selectedDistrict}
+                                onChange={handleDistrictChange}
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all font-bold premium-input"
+                                disabled={loading}
+                            >
+                                <option value="">Select District</option>
+                                {bangladeshData.districts.map(district => (
+                                    <option key={district.id} value={district.id}>{district.name}</option>
+                                ))}
+                            </select>
+                        </div>
 
-                    {/* Upazila */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Upazila</label>
-                        <select
-                            name="upazila"
-                            value={formData.upazila}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
-                            disabled={loading || !selectedDistrict}
-                        >
-                            <option value="">Select Upazila</option>
-                            {getUpazilas().map(upazila => (
-                                <option key={upazila} value={upazila}>{upazila}</option>
-                            ))}
-                        </select>
-                    </div>
+                        {/* Upazila */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-widest px-1">Upazila</label>
+                            <select
+                                name="upazila"
+                                value={formData.upazila}
+                                onChange={handleInputChange}
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all font-bold premium-input disabled:opacity-50"
+                                disabled={loading || !selectedDistrict}
+                            >
+                                <option value="">Select Upazila</option>
+                                {getUpazilas().map(upazila => (
+                                    <option key={upazila} value={upazila}>{upazila}</option>
+                                ))}
+                            </select>
+                        </div>
 
-                    {/* Password */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            placeholder="Enter password (min 6 characters)"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
-                            disabled={loading}
-                        />
-                    </div>
+                        {/* Password */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-widest px-1">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                placeholder="••••••••"
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all font-bold premium-input"
+                                disabled={loading}
+                            />
+                        </div>
 
-                    {/* Confirm Password */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                            placeholder="Confirm your password"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
-                            disabled={loading}
-                        />
+                        {/* Confirm Password */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-widest px-1">Confirm Password</label>
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                                placeholder="••••••••"
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all font-bold premium-input"
+                                disabled={loading}
+                            />
+                        </div>
                     </div>
 
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        disabled={loading}
-                        className="w-full bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-semibold py-2 rounded-lg transition duration-200"
+                        disabled={loading || uploading}
+                        className="w-full bg-red-600 text-white py-5 rounded-3xl font-black text-xl hover:bg-red-700 transition-all shadow-xl shadow-red-200 premium-button disabled:bg-gray-400 disabled:shadow-none flex items-center justify-center gap-3"
                     >
-                        {loading ? 'Creating Account...' : 'Register'}
+                        {loading ? 'Creating Account...' : <><CheckCircle size={24} /> Register as Donor</>}
                     </button>
                 </form>
 
                 {/* Login Link */}
-                <div className="mt-6 text-center">
-                    <p className="text-gray-600">Already have an account?{' '}
-                        <Link to="/login" className="text-red-600 hover:text-red-700 font-semibold">
+                <div className="mt-12 text-center border-t border-gray-50 pt-8">
+                    <p className="text-gray-500 font-bold">Already part of the community?{' '}
+                        <Link to="/login" className="text-red-600 hover:text-red-700 font-black tracking-tight">
                             Login here
                         </Link>
                     </p>
